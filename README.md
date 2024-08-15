@@ -18,9 +18,35 @@ It uses **PGVector** as the vector database, stores splitted document chunks in 
 
 # Usage with cURL
 
+This is a small document, yields response approximately in 10-12 seconds.
+
 ```bash
 curl -X 'POST' \
-  'http://0.0.0.0:8000/embed/' \
+  'https://glov.kefeli.dev/embed/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "query": "What are the certifications?",
+  "url": "https://d1.awsstatic.com/training-and-certification/docs/AWS_certification_paths.pdf"
+}'
+
+# Response:
+# {
+#   "chunks": [
+#     "Here’s what AWS Certification holders have to say:\n“Certifications add credibility and demonstrate my...",
+#     "positions you for career \nadvancement and higher pay. \nDo you have 1-3 years of IT or \nSTEM background?...",
+#     "Plan your AWS \nCertification Journey\nTRAINING AND CERTIFICATION\nFrom a non-IT background, \nswitching to a cloud career...",
+#     "– Associate and I now hold 10 AWS Certification(s). What I learned really changed my\nperspective of what’s ...",
+#     "the role(s) you are interested in and get started or continue your AWS Certification journey to achieve your ..."
+#   ]
+# }
+```
+
+FIA Rules document is a large document, yields response approximately in few minutes.
+
+```bash
+curl -X 'POST' \
+  'https://glov.kefeli.dev/embed/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
