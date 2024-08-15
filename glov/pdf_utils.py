@@ -24,6 +24,7 @@ class PDFService:  # noqa: D101
     @staticmethod
     def download_pdf(url: str) -> str:
         """Download the PDF file from the given URL and save it to a temporary file."""
+        PDFService.check_pdf_size(url)
         try:
             logger.info("Starting PDF download from URL: %s", url)
             response = requests.get(str(url), timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
