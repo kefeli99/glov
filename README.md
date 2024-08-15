@@ -5,6 +5,14 @@
 Glov-rag is a question-answering system based on an pretrained embedding model SentenceTransformer: **BAAI/bge-m3**.
 It uses **PGVector** as the vector database, stores splitted document chunks in the database, and allows users to query the database using a question.
 
+
+https://github.com/user-attachments/assets/74fc9cb7-7ec8-4320-9d6c-28b016a07119
+
+
+https://github.com/user-attachments/assets/be1b7f3d-9476-4cb6-985a-8830b475c1fb
+
+
+
 ## Features
 
 - [x] Checks if url is a valid HTTP/HTTPS URL
