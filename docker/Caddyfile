@@ -1,0 +1,3 @@
+glov.kefeli.dev {
+	reverse_proxy glov:8000
+}
