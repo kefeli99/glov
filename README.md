@@ -50,7 +50,28 @@ curl -X 'POST' \
 # }
 ```
 
-FIA Rules document is a large document, yields response approximately in few minutes.
+```bash
+curl -X 'POST' \
+  'https://glov.kefeli.dev/embed/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "query": "Why Self-Attention?",
+  "url": "https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf"
+}'
+# Response:
+# {
+#   "chunks": [
+#     "in the distance between positions, linearly for ConvS2S and logarithmically for ByteNet. This makes\nit more...",
+#     "computational complexity, self-attention layers are faster than recurrent layers when the sequence\nlength n is...",
+#     "relative positions, since for any ﬁxed offset k, PEpos+k can be represented as a linear function of\nPEpos...",
+#     "recurrent layers, by a factor of k. Separable convolutions [6], however, decrease the complexity\nconsiderably...",
+#     "and queries come from the same place, in this case, the output of the previous layer in the\nencoder..."
+#   ]
+# }
+```
+
+FIA Rules document is a large document, yields response approximately in 10 minutes.
 
 ```bash
 curl -X 'POST' \
