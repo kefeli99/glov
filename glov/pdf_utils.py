@@ -39,8 +39,11 @@ class PDFService:  # noqa: D101
             return temp_pdf.name
 
     @staticmethod
-    def validate_pdf_url(url: str):
+    def validate_pdf_url(url: HttpUrl) -> bool:
         """Check if the URL points to a PDF file."""
         logger.info("Validating PDF URL: %s", url)
-        if not url.lower().endswith(".pdf"):
+        if not url.path:
             raise HTTPException(status_code=400, detail="The URL does not point to a PDF file")
+        if not url.path.lower().endswith(".pdf"):
+            raise HTTPException(status_code=400, detail="The URL does not point to a PDF file")
+        return True
