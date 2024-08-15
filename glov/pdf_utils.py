@@ -17,6 +17,8 @@ logger = logging.getLogger(__name__)
 CONNECT_TIMEOUT = 10
 READ_TIMEOUT = 30
 
+TWENTY_MB = 20971520
+
 
 class PDFService:  # noqa: D101
     @staticmethod
@@ -37,6 +39,24 @@ class PDFService:  # noqa: D101
             temp_pdf.write(response.content)
             logger.info("PDF successfully downloaded and saved to: %s", temp_pdf.name)
             return temp_pdf.name
+
+    @staticmethod
+    def check_pdf_size(url: str, max_size: int = TWENTY_MB) -> None:
+        """Check the size of the PDF file before downloading it."""
+        try:
+            response = requests.head(url, allow_redirects=True, timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
+            response.raise_for_status()
+            pdf_size = int(response.headers.get("Content-Length", 0))
+            if pdf_size == 0:
+                logger.warning("Could not determine the size of the PDF file: %s", url)
+            else:
+                logger.info("PDF size: %s bytes", pdf_size)
+            if pdf_size > max_size:
+                logger.error("PDF file is too large: %s bytes", pdf_size)
+                raise HTTPException(status_code=400, detail="PDF file is too large")
+        except requests.RequestException as e:
+            logger.exception("Failed to get PDF size: %s", url)
+            raise HTTPException(status_code=400, detail=f"Failed to get PDF size: {e!s}") from e
 
     @staticmethod
     def validate_pdf_url(url: str) -> bool:
