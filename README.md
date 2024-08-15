@@ -28,6 +28,10 @@ These are the improvements that can be done in the future; some of them are open
 
   Enhancing the extraction process by including table and image extraction will lead to more comprehensive and accurate results, especially when dealing with complex documents.
 
+- **Accept pdf files from S3, Google Drive, and other cloud storage services.**
+
+  Extending the system to accept PDF files from cloud storage services can provide more flexibility and convenience to users, allowing them to upload files from various sources.
+
 - **Rate limit the incoming requests, to avoid abuse of the system.**
 
   Implementing a rate limit can help protect the system from being overwhelmed by excessive requests, potentially causing service disruptions. This can be achieved using FastAPI's rate limit middleware, which can efficiently manage and throttle incoming requests based on predefined limits.
@@ -52,6 +56,12 @@ fastapi dev glov/app.py
 
 ```bash
 docker build -f docker/Dockerfile -t glov-rag .
+```
+
+## Run Docker Compose
+
+```bash
+docker compose -f docker/docker-compose.yml up -d
 ```
 
 # Development
