@@ -9,7 +9,7 @@ from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_postgres import PGVector
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from pydantic import BaseModel, HttpUrl, field_validator
+from pydantic import BaseModel, ConfigDict, HttpUrl, field_validator
 
 from glov.pdf_utils import PDFService
 
@@ -29,7 +29,13 @@ COLLECTION_NAME = "my_docs"
 EMBEDDINGS_MODEL_NAME = "BAAI/bge-m3"
 MIN_QUERY_LENGTH = 3
 
-app = FastAPI()
+app = FastAPI(
+    title="Glov Query API",
+    description="API for extracting text from a PDF file and generating embeddings using a Hugging Face model",
+    version="0.1.0",
+    contact={"name": "Osman Dogukan Kefeli", "email": "dogukankefeli@gmail.com"},
+    license_info={"name": "MIT License", "url": "https://opensource.org/licenses/MIT"},
+)
 
 embeddings_model = HuggingFaceEmbeddings(model_name="BAAI/bge-m3")
 
