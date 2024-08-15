@@ -16,6 +16,29 @@ It uses **PGVector** as the vector database, stores splitted document chunks in 
 - [x] Logging on each step
 - [x] Tests for downloading PDF file and splitting PDF into chunks
 
+# Usage with cURL
+
+```bash
+curl -X 'POST' \
+  'http://0.0.0.0:8000/embed/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "query": "What are the rules for brakes?",
+  "url": "https://www.fia.com/sites/default/files/fia_2024_formula_1_technical_regulations_-_issue_1_-_2023-04-25.pdf"
+}'
+# Response:
+# {
+#   "chunks": [
+#     "11.1.2 The brake system must be designed so that within each circuit, the forces applied to the...",
+#     "11.2.2 All brake calipers must be made from aluminium materials with a modulus of elasticity no...",
+#     "2024 Formula 1 Technical Regulations \n92 \n25 April 2023 \n© 2023 Fédération Internationale de...",
+#     "11.3.2 All discs must have a maximum thickness of 32mm \n11.3.3 \nThe diameters of the discs are...",
+#     "made by the driver's direct physical input or by the system referred to in Article 11.6, and..."
+#   ]
+# }
+```
+
 ## Further Improvements
 
 These are the improvements that can be done in the future; some of them are open to discussion and may vary based on the requirements.
