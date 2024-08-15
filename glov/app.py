@@ -83,10 +83,11 @@ class QueryResponse(BaseModel):  # noqa: D101
 def query_pdf(request: QueryRequest, vectorstore=Depends(get_vectorstore)):  # type: ignore[no-untyped-def]
     """Extract text from a PDF file and generate embeddings for the text."""
     logger.info("Received query PDF request with URL: %s", request.url)
+    url = str(request.url)
     # Validate the PDF URL
-    PDFService.validate_pdf_url(request.url)
+    PDFService.validate_pdf_url(url)
     # Download the PDF file
-    pdf_path = PDFService.download_pdf(request.url)
+    pdf_path = PDFService.download_pdf(url)
 
     try:
         # Load the PDF file
