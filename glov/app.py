@@ -4,7 +4,7 @@ import logging
 from pathlib import Path
 
 from fastapi import Depends, FastAPI
-from langchain_community.document_loaders import PyPDFium2Loader
+from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_postgres import PGVector
@@ -107,7 +107,7 @@ def query_pdf(request: QueryRequest, vectorstore=Depends(get_vectorstore)):  # t
     try:
         # Load the PDF file
         logger.info("Loading PDF from path: %s", pdf_path)
-        loader = PyPDFium2Loader(pdf_path)
+        loader = PyMuPDFLoader(pdf_path)
         docs = loader.load()
         # Split the text into chunks
         all_splits = TextService.split_text(docs)
