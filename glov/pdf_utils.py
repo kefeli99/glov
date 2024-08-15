@@ -43,5 +43,6 @@ class PDFService:  # noqa: D101
         """Check if the URL points to a PDF file."""
         logger.info("Validating PDF URL: %s", url)
         if not url.lower().endswith(".pdf"):
+            logger.exception("The URL does not point to a PDF file: %s", url)
             raise HTTPException(status_code=400, detail="The URL does not point to a PDF file")
         return True
