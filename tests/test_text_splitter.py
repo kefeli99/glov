@@ -1,5 +1,5 @@
 import pytest
-from langchain_community.document_loaders import PyPDFium2Loader
+from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from test_pdf_service import download_pdf  # noqa: F401
@@ -8,7 +8,7 @@ from test_pdf_service import download_pdf  # noqa: F401
 @pytest.fixture
 def loader(download_pdf):  # type: ignore[no-untyped-def] # noqa: F811
     """Fixture to load the PDF document using the downloaded PDF file."""
-    return PyPDFium2Loader(download_pdf)
+    return PyMuPDFLoader(download_pdf)
 
 
 @pytest.fixture
