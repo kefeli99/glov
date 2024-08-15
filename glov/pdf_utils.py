@@ -5,6 +5,7 @@ import tempfile
 
 import requests
 from fastapi import HTTPException
+from pydantic import HttpUrl
 
 logging.basicConfig(
     level=logging.INFO,
@@ -20,11 +21,11 @@ READ_TIMEOUT = 30
 
 class PDFService:  # noqa: D101
     @staticmethod
-    def download_pdf(url: str) -> str:
+    def download_pdf(url: HttpUrl) -> str:
         """Download the PDF file from the given URL and save it to a temporary file."""
         try:
             logger.info("Starting PDF download from URL: %s", url)
-            response = requests.get(url, timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
+            response = requests.get(str(url), timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
             response.raise_for_status()
         except requests.Timeout as e:
             logger.exception("PDF download timed out: %s", url)
