@@ -1,0 +1,35 @@
+name: glov-rag
+services:
+  pgvector:
+    image: pgvector/pgvector:pg16
+    container_name: pgvector
+    environment:
+      - POSTGRES_USER=langchain
+      - POSTGRES_PASSWORD=langchain
+      - POSTGRES_DB=langchain
+    # ports:
+    # - 6024:5432
+
+  caddy:
+    image: caddy:2.8.4
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./site:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+
+  glov:
+    image: glov-rag:latest
+    container_name: glov
+    environment:
+      - DB_CONNECTION=postgresql+psycopg://langchain:langchain@pgvector:5432/langchain
+    ports:
+      - 8000:8000
+volumes:
+  caddy_data:
+  caddy_config:
