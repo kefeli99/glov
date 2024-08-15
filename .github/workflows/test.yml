@@ -1,0 +1,58 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10"]
+
+    name: Lint and Test
+
+    steps:
+      - name: 🔍 Checkout
+        uses: actions/checkout@v4 # https://github.com/actions/checkout
+
+      - name: 🔏 Check for poetry.lock file
+        id: check_poetry_lock
+        run: echo "$([ -f poetry.lock ] && echo "POETRY_LOCK_FOUND=1" || echo "POETRY_LOCK_FOUND=0")" >> $GITHUB_OUTPUT
+
+      - name: 🐍 Set up specific python
+        uses: actions/setup-python@v5 # https://github.com/actions/setup-python
+        with:
+          python-version: "${{ matrix.python-version }}"
+
+      - name: 🖋 Install poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.8.3 python3 -
+
+      - name: 🐍 Set up python with cache
+        if: steps.check_poetry_lock.outputs.POETRY_LOCK_FOUND == 1
+        uses: actions/setup-python@v5 # https://github.com/actions/setup-python
+        with:
+          python-version: "${{ matrix.python-version }}"
+          cache: "poetry"
+
+      - name: 🐍 Set up python without cache
+        if: steps.check_poetry_lock.outputs.POETRY_LOCK_FOUND == 0
+        uses: actions/setup-python@v5 # https://github.com/actions/setup-python
+        with:
+          python-version: "${{ matrix.python-version }}"
+
+      - name: 🔧 Install dependencies using poetry
+        run: |
+          poetry install --with dev,test --sync
+
+      - name: 🧶 Lint package
+        run: poetry run poe lint
+
+      - name: ⚗ Test package
+        run: poetry run poe test
