@@ -5,6 +5,7 @@ from pathlib import Path
 
 from fastapi import Depends, FastAPI
 from langchain_community.document_loaders import PyPDFium2Loader
+from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_postgres import PGVector
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -44,14 +45,14 @@ def get_vectorstore() -> PGVector:  # noqa: D103
     )
 
 
-def word_count(text):
+def word_count(text: str) -> int:
     """Count the number of words in the text."""
     return len(text.split())
 
 
 class TextService:  # noqa: D101
     @staticmethod
-    def split_text(docs):
+    def split_text(docs: list[Document]) -> list[Document]:
         """Split the text into chunks using the defined text splitter."""
         logger.info("Splitting text into chunks")
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=0, length_function=word_count)
@@ -66,7 +67,7 @@ class QueryRequest(BaseModel):  # noqa: D101
 
     @field_validator("query")
     @classmethod
-    def check_query_length(cls, value):
+    def check_query_length(cls, value: str) -> str:
         """Check that the query is at least 3 characters long."""
         if len(value) < MIN_QUERY_LENGTH:
             msg = "Query must be at least 3 characters long"
@@ -79,11 +80,11 @@ class QueryResponse(BaseModel):  # noqa: D101
 
 
 @app.post("/embed/", response_model=QueryResponse)
-def query_pdf(request: QueryRequest, vectorstore=Depends(get_vectorstore)):
+def query_pdf(request: QueryRequest, vectorstore=Depends(get_vectorstore)):  # type: ignore[no-untyped-def]
     """Extract text from a PDF file and generate embeddings for the text."""
     logger.info("Received query PDF request with URL: %s", request.url)
     # Validate the PDF URL
-    PDFService.validate_pdf_url(request.url.path)
+    PDFService.validate_pdf_url(request.url)
     # Download the PDF file
     pdf_path = PDFService.download_pdf(request.url)
 
