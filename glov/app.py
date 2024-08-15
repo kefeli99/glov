@@ -65,6 +65,15 @@ class QueryRequest(BaseModel):  # noqa: D101
     url: HttpUrl  # Validates that the input is a valid URL
     query: str
 
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "url": "https://www.fia.com/sites/default/files/fia_2024_formula_1_technical_regulations_-_issue_1_-_2023-04-25.pdf",
+                "query": "What are the rules for brakes?",
+            }
+        },
+    )
+
     @field_validator("query")
     @classmethod
     def check_query_length(cls, value: str) -> str:
