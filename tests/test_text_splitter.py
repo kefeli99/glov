@@ -6,19 +6,19 @@ from test_pdf_service import download_pdf  # noqa: F401
 
 
 @pytest.fixture
-def loader(download_pdf):  # noqa: F811
+def loader(download_pdf):  # type: ignore[no-untyped-def] # noqa: F811
     """Fixture to load the PDF document using the downloaded PDF file."""
     return PyPDFium2Loader(download_pdf)
 
 
 @pytest.fixture
-def docs(loader):
+def docs(loader):  # type: ignore[no-untyped-def]
     """Fixture to load documents from the PDF using the loader."""
     return loader.load()
 
 
 @pytest.fixture
-def text_splitter():
+def text_splitter():  # type: ignore[no-untyped-def]
     """Fixture to create the text splitter with a chunk size of 100 words."""
 
     def word_count(text: str) -> int:
@@ -28,7 +28,7 @@ def text_splitter():
     return RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=0, length_function=word_count)
 
 
-def test_text_splitter(text_splitter, docs):
+def test_text_splitter(text_splitter, docs):  # type: ignore[no-untyped-def]
     """Test that the text splitter splits documents into approximately 100-word chunks."""
     all_splits = text_splitter.split_documents(docs)
 
@@ -47,7 +47,7 @@ def test_text_splitter(text_splitter, docs):
     ), f"Average word count is {average_word_count}, which is outside the expected range."
 
 
-def test_exact_word_count(text_splitter, docs):
+def test_exact_word_count(text_splitter, docs):  # type: ignore[no-untyped-def]
     """Test that the text splitter produces the expected number of words in the first chunk."""
     all_splits = text_splitter.split_documents(docs)
     content = all_splits[0].page_content
