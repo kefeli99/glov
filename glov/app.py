@@ -1,6 +1,7 @@
 """API for extracting text from a PDF file and generating embeddings using a Hugging Face model."""
 
 import logging
+import os
 from pathlib import Path
 
 from fastapi import Depends, FastAPI
@@ -28,6 +29,7 @@ DB_CONNECTION = "postgresql+psycopg://langchain:langchain@localhost:6024/langcha
 COLLECTION_NAME = "my_docs"
 EMBEDDINGS_MODEL_NAME = "BAAI/bge-m3"
 MIN_QUERY_LENGTH = 3
+DB_CONNECTION = os.getenv("DB_CONNECTION", DB_CONNECTION)
 
 app = FastAPI(
     title="Glov Query API",
